@@ -1,0 +1,152 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "c54de0e8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "[nltk_data] Downloading package punkt to\n",
+      "[nltk_data]     C:\\Users\\abhin\\AppData\\Roaming\\nltk_data...\n",
+      "[nltk_data]   Unzipping tokenizers\\punkt.zip.\n",
+      "[nltk_data] Downloading package stopwords to\n",
+      "[nltk_data]     C:\\Users\\abhin\\AppData\\Roaming\\nltk_data...\n",
+      "[nltk_data]   Unzipping corpora\\stopwords.zip.\n",
+      "[nltk_data] Downloading package wordnet to\n",
+      "[nltk_data]     C:\\Users\\abhin\\AppData\\Roaming\\nltk_data...\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Original Text:\n",
+      "\n",
+      "\n",
+      "Natural Language Processing (NLP) is a field of Artificial Intelligence.\n",
+      "It helps computers understand, interpret, and generate human language!\n",
+      "Many applications such as chatbots, translation systems, and voice assistants use NLP.\n",
+      "\n",
+      "Text preprocessing is an important step in NLP.\n",
+      "It cleans the raw text data; removes unnecessary words, punctuation, and symbols.\n",
+      "This process improves the accuracy of machine learning models.\n",
+      "\n",
+      "\n",
+      "Text after removing punctuation:\n",
+      "\n",
+      "\n",
+      "Natural Language Processing NLP is a field of Artificial Intelligence\n",
+      "It helps computers understand interpret and generate human language\n",
+      "Many applications such as chatbots translation systems and voice assistants use NLP\n",
+      "\n",
+      "Text preprocessing is an important step in NLP\n",
+      "It cleans the raw text data removes unnecessary words punctuation and symbols\n",
+      "This process improves the accuracy of machine learning models\n",
+      "\n",
+      "\n",
+      "After Stop Word Removal:\n",
+      "\n",
+      "['natural', 'language', 'processing', 'nlp', 'field', 'artificial', 'intelligence', 'helps', 'computers', 'understand', 'interpret', 'generate', 'human', 'language', 'many', 'applications', 'chatbots', 'translation', 'systems', 'voice', 'assistants', 'use', 'nlp', 'text', 'preprocessing', 'important', 'step', 'nlp', 'cleans', 'raw', 'text', 'data', 'removes', 'unnecessary', 'words', 'punctuation', 'symbols', 'process', 'improves', 'accuracy', 'machine', 'learning', 'models']\n",
+      "\n",
+      "After Stemming:\n",
+      "\n",
+      "['natur', 'languag', 'process', 'nlp', 'field', 'artifici', 'intellig', 'help', 'comput', 'understand', 'interpret', 'gener', 'human', 'languag', 'mani', 'applic', 'chatbot', 'translat', 'system', 'voic', 'assist', 'use', 'nlp', 'text', 'preprocess', 'import', 'step', 'nlp', 'clean', 'raw', 'text', 'data', 'remov', 'unnecessari', 'word', 'punctuat', 'symbol', 'process', 'improv', 'accuraci', 'machin', 'learn', 'model']\n",
+      "\n",
+      "After Lemmatization:\n",
+      "\n",
+      "['natural', 'language', 'processing', 'nlp', 'field', 'artificial', 'intelligence', 'help', 'computer', 'understand', 'interpret', 'generate', 'human', 'language', 'many', 'application', 'chatbots', 'translation', 'system', 'voice', 'assistant', 'use', 'nlp', 'text', 'preprocessing', 'important', 'step', 'nlp', 'clean', 'raw', 'text', 'data', 'remove', 'unnecessary', 'word', 'punctuation', 'symbol', 'process', 'improves', 'accuracy', 'machine', 'learning', 'model']\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Import required libraries\n",
+    "import nltk\n",
+    "import string\n",
+    "from nltk.corpus import stopwords\n",
+    "from nltk.tokenize import word_tokenize\n",
+    "from nltk.stem import PorterStemmer, WordNetLemmatizer\n",
+    "\n",
+    "# Download required datasets (run once)\n",
+    "nltk.download('punkt')\n",
+    "nltk.download('stopwords')\n",
+    "nltk.download('wordnet')\n",
+    "\n",
+    "# Input Paragraphs\n",
+    "text = \"\"\"\n",
+    "Natural Language Processing (NLP) is a field of Artificial Intelligence.\n",
+    "It helps computers understand, interpret, and generate human language!\n",
+    "Many applications such as chatbots, translation systems, and voice assistants use NLP.\n",
+    "\n",
+    "Text preprocessing is an important step in NLP.\n",
+    "It cleans the raw text data; removes unnecessary words, punctuation, and symbols.\n",
+    "This process improves the accuracy of machine learning models.\n",
+    "\"\"\"\n",
+    "\n",
+    "print(\"Original Text:\\n\")\n",
+    "print(text)\n",
+    "\n",
+    "# 1. Remove punctuation\n",
+    "text_no_punct = text.translate(str.maketrans('', '', string.punctuation))\n",
+    "print(\"\\nText after removing punctuation:\\n\")\n",
+    "print(text_no_punct)\n",
+    "\n",
+    "# Tokenization\n",
+    "tokens = word_tokenize(text_no_punct.lower())\n",
+    "\n",
+    "# 2. Stop word removal\n",
+    "stop_words = set(stopwords.words('english'))\n",
+    "filtered_words = [word for word in tokens if word not in stop_words]\n",
+    "\n",
+    "print(\"\\nAfter Stop Word Removal:\\n\")\n",
+    "print(filtered_words)\n",
+    "\n",
+    "# 3. Stemming\n",
+    "stemmer = PorterStemmer()\n",
+    "stemmed_words = [stemmer.stem(word) for word in filtered_words]\n",
+    "\n",
+    "print(\"\\nAfter Stemming:\\n\")\n",
+    "print(stemmed_words)\n",
+    "\n",
+    "# 4. Lemmatization\n",
+    "lemmatizer = WordNetLemmatizer()\n",
+    "lemmatized_words = [lemmatizer.lemmatize(word) for word in filtered_words]\n",
+    "\n",
+    "print(\"\\nAfter Lemmatization:\\n\")\n",
+    "print(lemmatized_words)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4e066116",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
